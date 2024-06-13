@@ -1,0 +1,15 @@
+FROM python:3.11-slim-buster
+
+MAINTAINER Maximilian Thoma
+
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY ./start_api.py .
+COPY ./vlan_deploy ./vlan_deploy
+
+EXPOSE 5001
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5001", "start_api:app"]

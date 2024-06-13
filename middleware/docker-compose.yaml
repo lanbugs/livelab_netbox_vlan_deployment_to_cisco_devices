@@ -1,0 +1,37 @@
+---
+version: "3.8"
+
+services:
+  vlan_middleware_frontend:
+    image: vlan_middleware_frontend:1.5
+    build:
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5004:5001"
+    env_file:
+      - ./.env
+    depends_on:
+      - cache
+
+  vlan_middleware_backend:
+    image: vlan_middleware_backend:1.5
+    build:
+      dockerfile: Dockerfile.backend
+    env_file:
+      - ./.env
+    depends_on:
+      - cache
+
+  cache:
+    image: redis:7.2.4
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+
+
+volumes:
+  private-volume:
+  cache:

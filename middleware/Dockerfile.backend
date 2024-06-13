@@ -1,0 +1,13 @@
+FROM python:3.11-slim-buster
+
+MAINTAINER Maximilian Thoma
+
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY ./start_worker.py .
+COPY ./vlan_deploy ./vlan_deploy
+
+CMD [ "python3", "start_worker.py"]
